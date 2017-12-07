@@ -152,7 +152,6 @@ function didUserWin() {
     if (wins === 5) {
       document.getElementById("output").innerHTML = messages.ultWin
     } else {
-      getInput()
       start()
     }
   } else {
@@ -169,7 +168,6 @@ function didUserLose() {
     if (losses === 5) {
       document.getElementById("output").innerHTML = messages.ultLose
     } else {
-      getInput()
       start()
     }
   } else {
@@ -181,5 +179,7 @@ start()
 
 //listens to input
 function getInput() {
-  document.addEventListener('keydown', checkGuess, {once: true})
+  document.addEventListener('keydown', checkGuess, {
+    once: true
+  })
 }
