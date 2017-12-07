@@ -1,14 +1,14 @@
-//////beginning of all global variables
+////// beginning of all global variables
 
-//identify letters
+// identify letters
 var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
-//set an array of sports
+// set an array of sports
 var sports = [
   'archery', 'athletics', 'badminton', 'basketball', 'volleyball', 'boxing', 'diving', 'fencing', 'football', 'golf', 'gymnastics', 'handball', 'hockey', 'judo', 'pentathlon', 'rowing', 'rugby', 'sailing', 'shooting', 'swimming', 'taekwondo', 'tennis', 'triathlon', 'volleyball', 'weightlifting', 'wrestling',
 ]
 
-//set object messages
+// set object messages
 var messages = {
   win: 'You win!',
   lose: 'You lost!',
@@ -21,32 +21,26 @@ var messages = {
   newWordLost: 'Womp Womp! Start guessing the new word',
 }
 
-//set wins to zero
+// set wins to zero
 var wins = 0;
 
-//set losses to zero
+// set losses to zero
 var losses = 0;
 
-//set number of guesses left
-var guessesLeft
-
-//set the starting file number for hangman image
-var hangman
-
-//empty array for letters used
+// identify undefined variables
 var usedLetters
-
-//identify undefined variables
+var hangman
+var guessesLeft
 var answer
 var hiddenAnswerArr
 var hiddenAnswerStr
 var userGuess
 
-//////end global variables
+////// end global variables
 
 
 
-/////beginning of functions
+///// beginning of functions
 
 // Selects random answer from sports array
 function selectWord() {
@@ -176,7 +170,7 @@ function didUserLose() {
 
 start()
 
-//listens to input
+// listens to input
 function getInput() {
   document.addEventListener('keydown', checkGuess, {
     once: true
