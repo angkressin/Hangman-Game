@@ -34,7 +34,7 @@ var guessesLeft
 var hangman
 
 //empty array for letters used
-var usedLetters = []
+var usedLetters
 
 //identify undefined variables
 var answer
@@ -89,7 +89,6 @@ function start() {
   document.getElementById("losses").innerHTML = "Losses: " + losses;
   document.getElementById("alreadyUsed").innerHTML = ""
   usedLetters.pop(usedLetters.length)
-  //hideButton()
   getInput()
 }
 
