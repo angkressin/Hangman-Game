@@ -12,11 +12,12 @@ var sports = [
 var messages = {
   win: 'You win!',
   lose: 'You lost!',
-  ultWin: 'You won the game!',
-  ultLose: 'You lost the game! Game Over!',
+  ultWin: 'Congratulations! You won the whole game! To play again, refresh page',
+  ultLose: 'Sorry! You lost the game! Try again in four years! To play again, refresh page',
   guessed: 'You already guessed this letter, please try again...',
   invalidLetter: 'Please enter a letter from A-Z',
   trueLetter: '',
+  newWord: 'enter another letter to guess new word',
 }
 
 //set wins to zero
@@ -26,10 +27,10 @@ var wins = 0;
 var losses = 0;
 
 //set number of guesses left
-var guessesLeft = 9
+var guessesLeft
 
 //set the starting file number for hangman image
-var hangman = 1
+var hangman
 
 //empty array for letters used
 var usedLetters = []
@@ -63,16 +64,12 @@ function hideAnsArr(ansToHide) {
   return hidAnsArr
 }
 
-
-
 // Creates string with same num of "_"s as letters in answer (with spaces)
 function hideAnsStr(ansToHide) {
   var arrToString = hideAnsArr(ansToHide)
   var blankAnswer = arrToString.join(" ")
   return blankAnswer
 }
-
-
 
 // Starts or restarts game
 function start() {
@@ -82,15 +79,20 @@ function start() {
   console.log(answer)
   console.log(hiddenAnswerArr)
   console.log(hiddenAnswerStr)
+  hangman = 1
+  guessesLeft = 9
+  usedLetters = []
   document.getElementById("guess").innerHTML = hiddenAnswerStr;
   document.getElementById("guessesLeft").innerHTML = "# of guesses left: " + guessesLeft;
   document.getElementById("wins").innerHTML = "Wins: " + wins;
   document.getElementById("losses").innerHTML = "Losses: " + losses;
+  document.getElementById("alreadyUsed").innerHTML = ""
+  usedLetters.pop(usedLetters.length)
+  //hideButton()
   getInput()
 }
 
-
-
+// check if in alphabet and if used already
 function isGuessValid(guess) {
   if (alphabet.indexOf(guess) === -1) {
     document.getElementById("output").innerHTML = messages.invalidLetter
@@ -104,16 +106,17 @@ function isGuessValid(guess) {
 }
 
 
-
+// pull in all functions to check answer
 function checkGuess(guess) {
   guess = guess.key
   guess = guess.toLowerCase()
-  if (isGuessValid(guess) === true && (answer.indexOf(guess) > -1)) {
+  if (isGuessValid(guess) === true && answer.indexOf(guess) > -1) {
     document.getElementById("output").innerHTML = messages.trueLetter
     replaceUnderscores(guess)
     didUserWin()
-  } else if (isGuessValid(guess) === true){
+  } else if (isGuessValid(guess) === true) {
     document.getElementById("output").innerHTML = messages.trueLetter
+    document.getElementById("guessesLeft").innerHTML = "# of guesses left: " + guessesLeft;
     guessesLeft--
     hangman++
     usedLetters.push(guess)
@@ -125,8 +128,6 @@ function checkGuess(guess) {
     getInput()
   }
 }
-
-
 
 // Replaces underscore with userGuess
 function replaceUnderscores(guess) {
@@ -146,13 +147,12 @@ function didUserWin() {
     document.getElementById("wins").innerHTML = "Wins: " + wins
     //and sports image replaces hangman image
     document.getElementById("hangman").src = "assets/images/sports/" + answer + ".png"
-    if (wins === 3) {
-      document.getElementById("output").innerHTML = message.ultWin
-      /////// create a popup congratulations window
+    document.getElementById("output").innerHTML = messages.newWord
+    if (wins === 5) {
+      document.getElementById("output").innerHTML = messages.ultWin
     } else {
-      ///////STOP WAITING FOR INPUT AND ADD A BUTTON FOR NEW WORD
-      /////// set guessesLeft back to 9
-      /////// Create a button that runs start()
+      getInput()
+      start()
     }
   } else {
     getInput()
@@ -164,13 +164,11 @@ function didUserLose() {
   if (guessesLeft === 0) {
     losses++
     document.getElementById("losses").innerHTML = "Losses: " + losses
-    if (losses === 3) {
-      document.getElementById("output").innerHTML = message.ultLose
-      ///Create a popup you suck window
+    if (losses === 5) {
+      document.getElementById("output").innerHTML = messages.ultLose
     } else {
-      ///////
-      ///////set guesses back to 9
-      /////// Create a button that runs start()
+      getInput()
+      start()
     }
   } else {
     getInput()
@@ -180,65 +178,6 @@ function didUserLose() {
 start()
 
 //listens to input
-
 function getInput() {
   document.addEventListener('keydown', checkGuess, {once: true})
 }
-
-
-
-//if in alphabet && if letter is already guessed
-/*if ((alphabet.indexOf(userGuess) > -1) && (usedLetters.indexOf(userGuess) === -1)) {
-    //clears previous inValid message with empty string
-    document.getElementById("output").innerHTML = messages.trueLetter
-    //check if user guess matches answer
-    var correct = false
-    for (var j = 0; j < answer.length; j++) {
-      if (answer[j] === userGuess) {
-        //replaces underscore with userGuess
-        correct = true
-        hiddenAnswer[j] = userGuess;
-        document.getElementById("guess").innerHTML = hiddenAnswer.join(" ");
-      }
-      //if all underscores are replaced by letter then wins increase by one
-      if (hiddenAnswer.indexOf("_") === -1) {
-          wins++
-          document.getElementById("wins").innerHTML = "Wins: " + wins;
-          //and sports image replaces hangman image
-          document.getElementById("hangman").src = "assets/images/sports/" + answer + ".png"
-          //and button appears for a new word button
-        }
-      }
-      //if userGuess does not match
-      if (correct === false) {
-      //guess decrease by 1
-        if ((guessesLeft >= 1) && (hiddenAnswer.indexOf("_") !== -1)) {
-        guessesLeft--
-        document.getElementById("guessesLeft").innerHTML = "# of guesses left: " + guessesLeft
-          if (guessesLeft === 0) {
-          losses++
-          document.getElementById("losses").innerHTML = "Losses: " + losses;
-            }
-        //hangman image changes
-        hangman++
-        document.getElementById("hangman").src = "assets/images/hangman" + hangman + ".png"
-        //record input by pushing to usedLetters array
-        usedLetters.push(userGuess)
-        //list the usedLetters
-        wrongGuesses.push(userGuess)
-        var usedLetters = wrongGuesses.join(", ")
-        console.log(wrongGuesses)
-        document.getElementById("alreadyUsed").innerHTML = usedLetters
-      }
-    }
-}*/
-//if remaining guess reaches zero, stop game,
-//and losses increase by one
-//and button appears for a new word button
-
-
-
-
-//if wins reaches 10, pop-up, You've won the whole game!
-//else if loss reaches 10, print Sorry! You lose!
-//new word starts
