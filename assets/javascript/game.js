@@ -17,7 +17,8 @@ var messages = {
   guessed: 'You already guessed this letter, please try again...',
   invalidLetter: 'Please enter a letter from A-Z',
   trueLetter: '',
-  newWord: 'enter another letter to guess new word',
+  newWordWon: 'You got it! Start guessing the new word',
+  newWordLost: 'Womp Womp! Start guessing the new word',
 }
 
 //set wins to zero
@@ -147,7 +148,7 @@ function didUserWin() {
     document.getElementById("wins").innerHTML = "Wins: " + wins
     //and sports image replaces hangman image
     document.getElementById("hangman").src = "assets/images/sports/" + answer + ".png"
-    document.getElementById("output").innerHTML = messages.newWord
+    document.getElementById("output").innerHTML = messages.newWordWon
     if (wins === 5) {
       document.getElementById("output").innerHTML = messages.ultWin
     } else {
@@ -164,6 +165,7 @@ function didUserLose() {
   if (guessesLeft === 0) {
     losses++
     document.getElementById("losses").innerHTML = "Losses: " + losses
+    document.getElementById("output").innerHTML = messages.newWordLost
     if (losses === 5) {
       document.getElementById("output").innerHTML = messages.ultLose
     } else {
