@@ -39,3 +39,17 @@ body {
 .hangman-img {
   width: 50%;
 }
+
+.footer {
+  width: 100%;
+  color: #ffffff;
+  font-size: 0.8rem;
+  padding: .8rem;
+}
+
+.wrapper {
+  position: relative;
+  margin: auto;
+  width: 100%;
+  min-height: calc(100vh - 3.5rem);
+}
